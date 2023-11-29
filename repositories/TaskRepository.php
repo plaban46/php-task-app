@@ -40,4 +40,16 @@ class TaskRepository implements TaskInterface
     {
         //store the task
     }
+
+    public function updateTask($id, $title, $description)
+    {
+        $sql = "UPDATE tasks SET 
+            title = '$title', 
+            description = '$description' 
+            WHERE id = $id";
+
+        $result = $this->db->query($sql);
+
+        return $result;
+    }
 }

@@ -4,8 +4,15 @@ require 'TaskController.php';
 
 $taskRepository = new TaskRepository;
 $task = new TaskController($taskRepository);
-
 //print_r($task->index());
+
+if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['update'])) {
+    $title = strip_tags($_POST['title']);
+    $description = strip_tags($_POST['description']);
+    $id = $_POST['id'];
+
+    $task->update($id, $title, $description);
+}
 ?>
 <!doctype html>
 <html lang="en">
@@ -45,13 +52,48 @@ $task = new TaskController($taskRepository);
                                         class="badge text-bg-info text-white"><?php echo $task['status'] == 0 ? 'Open' : 'Closed'; ?></span>
                                 </td>
                                 <td>
-                                    <button class="btn btn-primary">Edit</button>
+                                    <button class="btn btn-primary" type="button" data-bs-toggle="modal"
+                                        data-bs-target="#staticBackdrop<?php echo $task['id']; ?>">Edit</button>
                                     <button class="btn btn-danger">Delete</button>
                                     <button class="btn btn-dark">
                                         <?php echo $task['status'] == 0 ? 'Close' : 'Open' ;?>
                                     </button>
                                 </td>
                             </tr>
+                            <!-- Modal -->
+                            <div class="modal fade modal-dialog modal-lg" id="staticBackdrop<?php echo $task['id']; ?>"
+                                data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+                                aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <form action="" method="POST">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h1 class="modal-title fs-5" id="staticBackdropLabel">Update Task</h1>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                    aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <div class="form-group">
+                                                    <label for="title">Title</label>
+                                                    <input type="text" class="form-control" name="title" id="title"
+                                                        required value="<?php echo $task['title']; ?>">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="title">Description</label>
+                                                    <textarea class="form-control" name="description" id="description"
+                                                        required><?php echo $task['description']; ?></textarea>
+                                                </div>
+                                                <div><input type="hidden" name="id" value="<?php echo $task['id']; ?>"></div>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary"
+                                                    data-bs-dismiss="modal">Close</button>
+                                                <button type="submit" name="update" class="btn btn-success">Update</button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
                             <?php } ?>
                         </tbody>
                     </table>

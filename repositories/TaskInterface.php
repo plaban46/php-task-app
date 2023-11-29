@@ -15,7 +15,7 @@ interface TaskInterface
     /**
      * Update the specified task in the database.
      */
-    // public function updateTask(Request $request, $id);
+    public function updateTask($id, $title, $description);
 
     /**
      * Remove the specified task from the database.
