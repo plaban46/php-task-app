@@ -52,4 +52,12 @@ class TaskRepository implements TaskInterface
 
         return $result;
     }
+
+    public function deleteTask($id)
+    {
+        $sql = "DELETE FROM tasks WHERE id = $id";
+        $result = $this->db->query($sql);
+        
+        return $result;
+    }
 }

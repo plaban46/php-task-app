@@ -20,7 +20,7 @@ interface TaskInterface
     /**
      * Remove the specified task from the database.
      */
-    //public function removeTask($id);
+    public function deleteTask($id);
 
     /**
      * Mark a task as completed or incomplete.

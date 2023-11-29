@@ -1,8 +1,7 @@
 <?php
 
-require __DIR__ . '/vendor/autoload.php';
 require __DIR__ . '/repositories/TaskRepository.php';
-
+session_start();
 class TaskController extends TaskRepository 
 {
     private $repository;
@@ -21,10 +20,23 @@ class TaskController extends TaskRepository
     {
         if(!empty($id) && !empty($title) &&!empty($description)){ 
             $updateTask = $this->repository->updateTask($id, $title, $description);
-            if ( $updateTask ) {
-                echo "<div class='alert alert-success'>Task updated Successfully</div>";
+            if ($updateTask)  {
+               $_SESSION['success_message'] = 'Task updated successfully'; 
             } else {
-                echo "class='alert alert-success'>Unable to update task</div>";
+                $_SESSION['error_message'] = 'Task unable to update'; 
+            }
+        }
+    }
+
+    public function delete($id)
+    {
+        if($id)
+        {
+            $deleteTask = $this->repository->deleteTask($id);
+            if ($deleteTask) {
+               $_SESSION['success_message'] = 'Task deleted successfully'; 
+            } else {
+                $_SESSION['error_message'] = 'Task unable to delete'; 
             }
         }
     }

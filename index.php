@@ -7,12 +7,13 @@ $task = new TaskController($taskRepository);
 //print_r($task->index());
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['update'])) {
-    $title = strip_tags($_POST['title']);
-    $description = strip_tags($_POST['description']);
-    $id = $_POST['id'];
-
-    $task->update($id, $title, $description);
+    $task->update($_POST['id'], strip_tags($_POST['title']), strip_tags($_POST['description']));
 }
+
+if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['delete'])) {
+    $task->delete($_POST['task-id']);
+}
+
 ?>
 <!doctype html>
 <html lang="en">
@@ -25,11 +26,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['update'])) {
         integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
 </head>
 
+<!---include navbar --->
+<?php include 'views/navbar.php'; ?>
+
 <body>
     <div class="container">
-        <div class="row">
+        <div class="row mt-5">
             <h1>All Tasks</h1>
             <h4>Total tasks: <?php echo count($task->index()); ?> </h4>
+
+            <!--Display flash message-->
+            <?php include 'flash_message.php'; ?>
+
             <div class="card shadow-sm">
                 <div class="card-body">
                     <table class="table table-striped">
@@ -43,7 +51,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['update'])) {
                             </tr>
                         </thead>
                         <tbody>
-                            <?php foreach ($task->index() as $task) { ?>
+                            <?php foreach ($task->index() as $task) {?>
                             <tr>
                                 <td><?php echo $task['user_name']; ?></td>
                                 <td><?php echo $task['title']; ?></td>
@@ -54,14 +62,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['update'])) {
                                 <td>
                                     <button class="btn btn-primary" type="button" data-bs-toggle="modal"
                                         data-bs-target="#staticBackdrop<?php echo $task['id']; ?>">Edit</button>
-                                    <button class="btn btn-danger">Delete</button>
+                                    <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModal<?php echo $task['id']; ?>">Delete</button>
                                     <button class="btn btn-dark">
-                                        <?php echo $task['status'] == 0 ? 'Close' : 'Open' ;?>
+                                        <?php echo $task['status'] == 0 ? 'Close' : 'Open'; ?>
                                     </button>
                                 </td>
                             </tr>
-                            <!-- Modal -->
-                            <div class="modal fade modal-dialog modal-lg" id="staticBackdrop<?php echo $task['id']; ?>"
+
+                            <!-- Edit Modal -->
+                            <div class="modal modal-dialog modal-lg" id="staticBackdrop<?php echo $task['id']; ?>"
                                 data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
                                 aria-labelledby="staticBackdropLabel" aria-hidden="true">
                                 <div class="modal-dialog">
@@ -83,18 +92,25 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['update'])) {
                                                     <textarea class="form-control" name="description" id="description"
                                                         required><?php echo $task['description']; ?></textarea>
                                                 </div>
-                                                <div><input type="hidden" name="id" value="<?php echo $task['id']; ?>"></div>
+                                                <div><input type="hidden" name="id" value="<?php echo $task['id']; ?>">
+                                                </div>
                                             </div>
                                             <div class="modal-footer">
                                                 <button type="button" class="btn btn-secondary"
                                                     data-bs-dismiss="modal">Close</button>
-                                                <button type="submit" name="update" class="btn btn-success">Update</button>
+                                                <button type="submit" name="update"
+                                                    class="btn btn-success">Update</button>
                                             </div>
                                         </div>
                                     </form>
                                 </div>
                             </div>
+
+                            <!--include delete confirmation-->
+                            <?php include 'views/modal.php'; ?>
+
                             <?php } ?>
+                            
                         </tbody>
                     </table>
                 </div>
