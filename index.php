@@ -14,6 +14,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['delete'])) {
     $task->delete($_POST['task-id']);
 }
 
+if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['add'])) {
+    $task->store(strip_tags($_POST['title']), strip_tags($_POST['description']));
+}
+
+if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['status'])) {
+    $task->changeStatus($_POST['id']);
+}
+
+
 ?>
 <!doctype html>
 <html lang="en">
@@ -27,16 +36,24 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['delete'])) {
 </head>
 
 <!---include navbar --->
-<?php include 'views/navbar.php'; ?>
+<?php include 'views/navbar.php';?>
 
 <body>
     <div class="container">
         <div class="row mt-5">
-            <h1>All Tasks</h1>
-            <h4>Total tasks: <?php echo count($task->index()); ?> </h4>
-
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <h1>All Tasks</h1>
+                    <h4>Total tasks: <?php echo count($task->index()); ?> </h4>
+                </div>
+                <div>
+                    <button class="btn btn-dark" type="button" data-bs-toggle="offcanvas"
+                        data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">Add Task</button>
+                </div>
+            </div>
+            <?php include 'views/add.php';?>
             <!--Display flash message-->
-            <?php include 'flash_message.php'; ?>
+            <?php include 'flash_message.php';?>
 
             <div class="card shadow-sm">
                 <div class="card-body">
@@ -57,16 +74,24 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['delete'])) {
                                 <td><?php echo $task['title']; ?></td>
                                 <td><?php echo date('Y-m-d', strtotime($task['created_at'])); ?></td>
                                 <td><span
-                                        class="badge text-bg-info text-white"><?php echo $task['status'] == 0 ? 'Open' : 'Closed'; ?></span>
+                                        class="badge <?php echo $task['status'] == 0 ?'text-bg-dark':'text-bg-info';?> text-white"><?php echo $task['status'] == 0 ? 'Open' : 'Closed'; ?></span>
                                 </td>
                                 <td>
-                                    <button class="btn btn-primary" type="button" data-bs-toggle="modal"
-                                        data-bs-target="#staticBackdrop<?php echo $task['id']; ?>">Edit</button>
-                                    <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModal<?php echo $task['id']; ?>">Delete</button>
-                                    <button class="btn btn-dark">
-                                        <?php echo $task['status'] == 0 ? 'Close' : 'Open'; ?>
-                                    </button>
+                                    <div class="d-flex justify-content-start">
+                                        <button class="btn btn-dark" type="button" data-bs-toggle="modal"
+                                            data-bs-target="#staticBackdrop<?php echo $task['id']; ?>">Edit</button>
+                                        <button class="btn btn-dark ms-2" data-bs-toggle="modal"
+                                            data-bs-target="#exampleModal<?php echo $task['id']; ?>">Delete</button>
+                                        <form method="POST" action="" class="ms-2">
+                                            <input type="hidden" name="id" value="<?php echo $task['id']; ?>" />
+                                            <button type="submit" name="status"
+                                                class="<?php echo $task['status'] == 0 ? 'btn btn-dark' : 'btn btn-info text-white' ?>">
+                                                <?php echo $task['status'] == 0 ? 'Close' : 'Open'; ?>
+                                            </button>
+                                        </form>
+                                    </div>
                                 </td>
+
                             </tr>
 
                             <!-- Edit Modal -->
@@ -98,8 +123,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['delete'])) {
                                             <div class="modal-footer">
                                                 <button type="button" class="btn btn-secondary"
                                                     data-bs-dismiss="modal">Close</button>
-                                                <button type="submit" name="update"
-                                                    class="btn btn-success">Update</button>
+                                                <button type="submit" name="update" class="btn btn-dark">Update</button>
                                             </div>
                                         </div>
                                     </form>
@@ -107,17 +131,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['delete'])) {
                             </div>
 
                             <!--include delete confirmation-->
-                            <?php include 'views/modal.php'; ?>
+                            <?php include 'views/modal.php';?>
 
-                            <?php } ?>
-                            
+                            <?php }?>
                         </tbody>
                     </table>
                 </div>
             </div>
         </div>
     </div>
-
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous">
