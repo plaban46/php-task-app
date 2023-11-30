@@ -85,4 +85,14 @@ class TaskRepository implements TaskInterface {
         }
 
     }
+
+    public function getAllUsers()
+    {
+        $sql = "SELECT id,name,email FROM users";
+
+        $result = $this->db->query( $sql );
+
+        return $result;
+    }
+    
 }

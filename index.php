@@ -4,8 +4,8 @@ require 'TaskController.php';
 
 $taskRepository = new TaskRepository;
 $task = new TaskController($taskRepository);
-//print_r($task->index());
-
+//print_r($task->users());
+$users = $task->users();
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['update'])) {
     $task->update($_POST['id'], strip_tags($_POST['title']), $_POST['description']);
@@ -78,7 +78,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['status'])) {
                                             </button>
                                         </form>&nbsp;&nbsp;
                                         <button class="btn btn-dark" type="button" data-bs-toggle="modal"
-                                            data-bs-target="#showTask<?php echo $task['id']; ?>">View</button>
+                                            data-bs-target="#showTask<?php echo $task['id']; ?>">View</button>&nbsp;&nbsp;
+                                            <button class="btn btn-dark" type="button" data-bs-toggle="modal"
+                                            data-bs-target="#assignModal<?php echo $task['id']; ?>">Assign</button>
                                     </div>
                                 </td>
 
@@ -122,7 +124,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['status'])) {
 
                             <!--include show modal -->
                             <?php include 'views/show.php';?>
-
+                            <?php include 'views/assign.php';?>
                             <!--include delete confirmation-->
                             <?php include 'views/modal.php';?>
                             <?php }?>

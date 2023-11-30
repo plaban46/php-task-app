@@ -73,4 +73,9 @@ class TaskController extends TaskRepository
             }
         }
     }
+
+    public function users()
+    {
+       return $this->repository->getAllUsers();
+    }
 }

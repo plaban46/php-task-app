@@ -30,6 +30,8 @@ interface TaskInterface {
     */
     public function taskStatus( $id );
 
+    public function getAllUsers();
+
     /**
     * Assign a task to a user.
     */
