@@ -10,23 +10,35 @@
 
 # Folder Structure
 
-/yourproject
+/php-task-app
+
   ├── repositories/
+  
   │   ├── TaskRepository.php
   │   ├── TaskInterface.php
   │   └── Database.php
+
   ├── views/
   │   ├── add.php
   │   ├── assign.php
   │   ├── modal.php
   │   ├── show.php
   │   └── navbar.php
+
   ├── flash_message.php
+
   ├── Database.php
+
   ├── index.php
+
   ├── TaskController.php
+
   ├── .env
+
   └── README.md
 
 
 <img src="Screen Shot 2023-11-30 at 2.20.01 pm.png">
+<img src="Screen Shot 2023-11-30 at 2.20.11 pm.png">
+<img src="Screen Shot 2023-11-30 at 2.20.23 pm.png">
+<img src="Screen Shot 2023-11-30 at 2.20.37 pm.png">
