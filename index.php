@@ -6,8 +6,9 @@ $taskRepository = new TaskRepository;
 $task = new TaskController($taskRepository);
 //print_r($task->index());
 
+
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['update'])) {
-    $task->update($_POST['id'], strip_tags($_POST['title']), strip_tags($_POST['description']));
+    $task->update($_POST['id'], strip_tags($_POST['title']), $_POST['description']);
 }
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['delete'])) {
@@ -15,26 +16,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['delete'])) {
 }
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['add'])) {
-    $task->store(strip_tags($_POST['title']), strip_tags($_POST['description']));
+    $task->store(strip_tags($_POST['title']), $_POST['description']);
 }
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['status'])) {
     $task->changeStatus($_POST['id']);
 }
-
-
 ?>
-<!doctype html>
-<html lang="en">
-
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Tasks</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-</head>
-
 <!---include navbar --->
 <?php include 'views/navbar.php';?>
 
@@ -81,14 +69,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['status'])) {
                                         <button class="btn btn-dark" type="button" data-bs-toggle="modal"
                                             data-bs-target="#staticBackdrop<?php echo $task['id']; ?>">Edit</button>
                                         <button class="btn btn-dark ms-2" data-bs-toggle="modal"
-                                            data-bs-target="#exampleModal<?php echo $task['id']; ?>">Delete</button>
-                                        <form method="POST" action="" class="ms-2">
+                                            data-bs-target="#exampleModal<?php echo $task['id']; ?>">Delete</button>&nbsp;&nbsp;
+                                        <form method="POST" action="">
                                             <input type="hidden" name="id" value="<?php echo $task['id']; ?>" />
                                             <button type="submit" name="status"
                                                 class="<?php echo $task['status'] == 0 ? 'btn btn-dark' : 'btn btn-info text-white' ?>">
                                                 <?php echo $task['status'] == 0 ? 'Close' : 'Open'; ?>
                                             </button>
-                                        </form>
+                                        </form>&nbsp;&nbsp;
+                                        <button class="btn btn-dark" type="button" data-bs-toggle="modal"
+                                            data-bs-target="#showTask<?php echo $task['id']; ?>">View</button>
                                     </div>
                                 </td>
 
@@ -114,7 +104,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['status'])) {
                                                 </div>
                                                 <div class="form-group">
                                                     <label for="title">Description</label>
-                                                    <textarea class="form-control" name="description" id="description"
+                                                    <textarea class="form-control" name="description" id="summernote2"
                                                         required><?php echo $task['description']; ?></textarea>
                                                 </div>
                                                 <div><input type="hidden" name="id" value="<?php echo $task['id']; ?>">
@@ -130,9 +120,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['status'])) {
                                 </div>
                             </div>
 
+                            <!--include show modal -->
+                            <?php include 'views/show.php';?>
+
                             <!--include delete confirmation-->
                             <?php include 'views/modal.php';?>
-
                             <?php }?>
                         </tbody>
                     </table>
@@ -141,8 +133,21 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['status'])) {
         </div>
     </div>
 
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous">
+    </script>
+    <script>
+    $(document).ready(function() {
+        $('#summernote').summernote();
+    });
+    </script>
+        <script>
+    $(document).ready(function() {
+        $('#summernote2').summernote();
+    });
     </script>
 </body>
 
