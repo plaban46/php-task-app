@@ -69,7 +69,7 @@ class TaskController extends TaskRepository
                 $_SESSION['success_message'] = 'Task status changed successfully';
 
             } else {
-                $_SESSION['error_message'] = 'unable to change task status';
+                $_SESSION['error_message'] = 'Unable to change task status';
             }
         }
     }
@@ -77,5 +77,16 @@ class TaskController extends TaskRepository
     public function users()
     {
        return $this->repository->getAllUsers();
+    }
+
+    public function assignTaskTo($userId, $taskId)
+    {
+        $assignSuccess = $this->repository->assign($userId, $taskId); 
+        if ($assignSuccess) {
+            $_SESSION['success_message'] = 'Task assigned successfully';
+
+        } else {
+            $_SESSION['error_message'] = 'Unable to assign task to user';
+        }
     }
 }

@@ -94,5 +94,17 @@ class TaskRepository implements TaskInterface {
 
         return $result;
     }
+
+    public function assign($userId, $taskId)
+    {
+        $sql = "UPDATE tasks SET
+            user_assign_id = '$userId'
+            WHERE id = '$taskId'";
+
+        $result = $this->db->query( $sql );
+
+        return $result;
+
+    }
     
 }

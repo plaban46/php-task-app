@@ -2,7 +2,7 @@
 <div class="modal fade" id="assignModal<?php echo $task['id']; ?>" tabindex="-1" aria-labelledby="exampleModalLabel"
     aria-hidden="true">
     <div class="modal-dialog">
-        <form action="" method="post">
+        <form action="" method="POST">
             <div class="modal-content">
                 <div class="modal-header">
                     <h1 class="modal-title fs-5" id="exampleModalLabel">Assign</h1>
@@ -10,8 +10,8 @@
                 </div>
                 <div class="modal-body">
                     <p>Task name: <?php echo $task['title']; ?></p>
-                   <select name="user" class="form-control">
-                    <option value="">Select a user to assing</option>    
+                   <select name="user-id" class="form-control">
+                    <option value="">Select a user to assing task</option>    
                     <?php foreach($users as $user) { ?>
                         <option value="<?php echo $user['id'] ?>"> <?php echo $user['name'] ?></option>
                     <?php }?>

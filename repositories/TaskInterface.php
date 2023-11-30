@@ -38,5 +38,5 @@ interface TaskInterface {
     /**
     * Assign a task to a user.
     */
-    //public function assignToUser( Request $request );
+    public function assign( $userId, $taskId );
 }

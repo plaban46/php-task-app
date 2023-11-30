@@ -22,6 +22,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['add'])) {
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['status'])) {
     $task->changeStatus($_POST['id']);
 }
+
+if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['assign'])) {
+    $task->assignTaskTo($_POST['user-id'], $_POST['task-id']);
+}
+
 ?>
 <!---include navbar --->
 <?php include 'views/navbar.php';?>
@@ -62,7 +67,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['status'])) {
                                 <td><?php echo $task['title']; ?></td>
                                 <td><?php echo date('Y-m-d', strtotime($task['created_at'])); ?></td>
                                 <td><span
-                                        class="badge <?php echo $task['status'] == 0 ?'text-bg-dark':'text-bg-info';?> text-white"><?php echo $task['status'] == 0 ? 'Open' : 'Closed'; ?></span>
+                                        class="badge <?php echo $task['status'] == 0 ? 'text-bg-dark' : 'text-bg-info'; ?> text-white"><?php echo $task['status'] == 0 ? 'Open' : 'Closed'; ?></span>
                                 </td>
                                 <td>
                                     <div class="d-flex justify-content-start">
