@@ -39,6 +39,6 @@
 
 
 <img src="Screen Shot 2023-11-30 at 2.20.01 pm.png">
-<img src="Screen Shot 2023-11-30 at 2.25.49 pm">
+<img src="Screen Shot 2023-11-30 at 2.25.49 pm.png">
 <img src="Screen Shot 2023-11-30 at 2.20.23 pm.png">
 <img src="Screen Shot 2023-11-30 at 2.20.37 pm.png">
