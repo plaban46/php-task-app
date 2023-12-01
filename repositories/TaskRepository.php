@@ -34,41 +34,30 @@ class TaskRepository implements TaskInterface {
         return $this->db->fetchAll( $sql );
     }
 
-    public function storeTask( $title, $description, $status = 0 ) {
-        $sql = "INSERT INTO tasks (
-            title,
-            description,
-            status,
-            created_at)
-            values('$title','$description','$status', NOW()
-            )";
-
-        $result = $this->db->query( $sql );
+    public function storeTask($title, $description, $status = 0) {
+        $sql = "INSERT INTO tasks (title, description, status, created_at) VALUES (?, ?, ?, NOW())";
+        $result = $this->db->prepareAndExecute($sql, 'ssi', $title, $description, $status);
 
         return $result;
     }
 
-    public function updateTask( $id, $title, $description ) {
-        $sql = "UPDATE tasks SET
-            title = '$title',
-            description = '$description'
-            WHERE id = $id";
-
-        $result = $this->db->query( $sql );
+    public function updateTask($id, $title, $description) {
+        $sql = "UPDATE tasks SET title = ?, description = ? WHERE id = ?";
+        $result = $this->db->prepareAndExecute($sql, 'ssi', $title, $description, $id);
 
         return $result;
     }
 
-    public function deleteTask( $id ) {
-        $sql = "DELETE FROM tasks WHERE id = $id";
-        $result = $this->db->query( $sql );
+    public function deleteTask($id) {
+        $sql = "DELETE FROM tasks WHERE id = ?";
+        $result = $this->db->prepareAndExecute($sql, 'i', $id);
 
         return $result;
     }
 
     public function taskStatus( $id ) {
-        $sql = "SELECT status FROM tasks WHERE id = $id";
-        $result = $this->db->query( $sql );
+        $sql = "SELECT status FROM tasks WHERE id = ?";
+        $result = $this->db->prepareAndExecute($sql, 'i', $id);
         if ( $result ) {
             $row = $result->fetch_assoc();
             if ( $row && $row[ 'status' ] == 0 ) {
@@ -97,11 +86,8 @@ class TaskRepository implements TaskInterface {
 
     public function assign($userId, $taskId)
     {
-        $sql = "UPDATE tasks SET
-            user_assign_id = '$userId'
-            WHERE id = '$taskId'";
-
-        $result = $this->db->query( $sql );
+        $sql = "UPDATE tasks SET user_assign_id = ? WHERE id = ?";
+        $result = $this->db->prepareAndExecute($sql, 'ii', $userId, $taskId);
 
         return $result;
 

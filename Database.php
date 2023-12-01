@@ -38,6 +38,22 @@ class Database
         return $result;
     }
 
+    public function prepareAndExecute($sql, $types, ...$params) {
+        $stmt = $this->connection->prepare($sql);
+
+        if (!$stmt) {
+            return false;
+        }
+
+        $stmt->bind_param($types, ...$params);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        $stmt->close();
+
+        return $result;
+    }
+
     public function fetchAll($sql)
     {
         $result = $this->query($sql);

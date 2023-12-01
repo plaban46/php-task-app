@@ -3,11 +3,11 @@
 require __DIR__ . '/repositories/TaskRepository.php';
 session_start();
 
-class TaskController extends TaskRepository
+class TaskController 
 {
     private $repository;
 
-    public function __construct(TaskRepository $repository)
+    public function __construct(TaskInterface $repository)
     {
         $this->repository = $repository;
     }

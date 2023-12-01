@@ -1,9 +1,15 @@
 <?php
 
 require 'TaskController.php';
+require 'AuthMiddleware.php';
 
 $taskRepository = new TaskRepository;
 $task = new TaskController($taskRepository);
+
+//redirect to login page if not logged in
+// $auth = new AuthMiddleware;
+// $auth->handle();
+
 //print_r($task->users());
 $users = $task->users();
 
